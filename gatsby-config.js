@@ -14,8 +14,17 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "products",
+        path: `${__dirname}/src/pages/products`,
+      },
+    },
     "gatsby-transformer-sharp",
+    "gatsby-transformer-remark",
     "gatsby-plugin-sharp",
+    "gatsby-plugin-catch-links",
     {
       resolve: "gatsby-plugin-manifest",
       options: {
