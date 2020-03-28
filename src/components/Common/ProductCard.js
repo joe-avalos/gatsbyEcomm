@@ -5,6 +5,7 @@ import { jsx, Styled } from "theme-ui"
 import PropTypes from "prop-types"
 
 import Dummy from "../../images/products/dummy.svg"
+import Plus from "../../images/elements/plus.svg"
 
 function ProductCard({ name, slug, excerpt }) {
   return (
@@ -12,7 +13,7 @@ function ProductCard({ name, slug, excerpt }) {
       <img src={Dummy} alt={name} />
       <h5>{name}</h5>
       <p>{excerpt}</p>
-      <Link to={slug}>More</Link>
+      <Link to={slug}><img sx={styles.plus} src={Plus} alt="Read more" /></Link>
     </Styled.div>
   )
 }
@@ -27,6 +28,7 @@ export default ProductCard
 
 const styles = {
   cardWrapper: {
+    position: "relative",
     width: 265,
     display: "inline-block",
     height: 273,
@@ -38,7 +40,7 @@ const styles = {
     "&:not(:last-of-type)": {
       marginRight: 40,
     },
-    img: {
+    "& > img": {
       display: "block",
       margin: "11px auto",
       height: 92,
@@ -51,5 +53,10 @@ const styles = {
       margin: 0,
       color: "white",
     },
+  },
+  plus: {
+    position: "absolute",
+    right: "4px",
+    bottom: "4px",
   },
 }

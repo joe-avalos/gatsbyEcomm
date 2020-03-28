@@ -141,6 +141,7 @@ export default {
     primary: {
       color: "#fff",
       backgroundColor: "accent",
+      textTransform: "uppercase",
       border: "none",
       padding: "12px 35px 13px",
       maxWidth: "max-content",
