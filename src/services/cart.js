@@ -32,3 +32,8 @@ export const addToCart = item => {
     })
   }
 }
+
+export const cartCount = () => {
+  const cart = getCart()
+  return cart.items.reduce((tally, cartItem) => tally + cartItem.quantity, 0)
+}

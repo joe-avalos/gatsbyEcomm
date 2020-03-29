@@ -54,7 +54,7 @@ function ProductList() {
   }
   
   return (
-    <section sx={{ paddingTop: [60, 60, 105] }}>
+    <section sx={{ paddingTop: [10, 20, 64] }}>
       <Row styles={{ justifyContent: ["left"], position: "relative" }}>
         <button sx={styles.arrowLeft} disabled={disabledLeft} onClick={moveLeft}>
           <img src={Arrow} alt="Arrow left" />
@@ -95,24 +95,16 @@ const styles = {
     maxWidth: "100%",
   },
   arrowLeft: {
+    variant: "button.secondary",
     position: "absolute",
     top: "calc(50% - 36px)",
-    left: -55,
-    background: "transparent",
-    border: "none",
-    "&:focus": {
-      outline: "none !important",
-    },
+    left: -82,
   },
   arrowRight: {
+    variant: "button.secondary",
     position: "absolute",
     top: "calc(50% - 36px)",
-    background: "transparent",
-    border: "none",
-    right: -43,
+    right: -70,
     transform: "rotate(-180deg)",
-    "&:focus": {
-      outline: "none",
-    },
   },
 }

@@ -151,6 +151,14 @@ export default {
       cursor: "pointer",
       borderRadius: "4px",
     },
+    secondary: {
+      background: "transparent",
+      border: "none",
+      cursor: "pointer",
+      "&:focus": {
+        outline: "none",
+      },
+    },
   },
   sizes: {
     "1/2": "50%",
