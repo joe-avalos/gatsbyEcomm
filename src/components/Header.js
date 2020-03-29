@@ -1,13 +1,33 @@
 /** @jsx jsx */
+import { useState } from "react"
 import { jsx } from "theme-ui"
 import { Link } from "gatsby"
+import Modal from "styled-react-modal"
+import styled from "styled-components"
 
 import { Container } from "../components/Grid"
+import ModalCart from "../components/Common/ModalCart"
 import Cart from "../images/elements/cart.svg"
-import { cartCount } from "../services/cart"
+import { cartCount, getCartItems } from "../services/cart"
+
+const StyledModal = Modal.styled`
+  position: absolute;
+  width: 281px;
+  height: 276px;
+  left: 1116px;
+  top: 59px;
+  background: #220538;
+  border: 2px solid #F5F5F5;
+  box-sizing: border-box;
+  border-radius: 4px;
+`
 
 export default function Header() {
   const count = cartCount()
+  const [isOpen, setIsOpen] = useState(false)
+  function toggleModal() {
+    setIsOpen(!isOpen)
+  }
   return (
     <header sx={styles.header}>
       <Container
@@ -27,18 +47,21 @@ export default function Header() {
         <Link to="/" sx={styles.mainLink}>
           JAM SHOP
         </Link>
-        <button sx={styles.cart}>
+        <button sx={styles.cart} onClick={toggleModal}>
           <img src={Cart} alt="Shopping Cart" />
           <div sx={styles.dot}>{count}</div>
         </button>
+        <StyledModal
+          isOpen={isOpen}
+          onBackgroundClick={toggleModal}
+          onEscapeKeydown={toggleModal}
+        >
+          <ModalCart items={getCartItems()} toggleModal={toggleModal} />
+        </StyledModal>
       </Container>
     </header>
   )
 }
-
-Header.propTypes = {}
-
-Header.defaultProps = {}
 
 const styles = {
   header: {

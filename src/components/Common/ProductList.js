@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import React, { useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { jsx, Styled } from "theme-ui"
+import { jsx } from "theme-ui"
 
 import { Row, Col } from "../Grid"
 import ProductCard from "./ProductCard"
@@ -31,7 +31,6 @@ function ProductList() {
   const [last, setLast] = useState(count < 5 ? count - 1 : 3)
   const [disabledLeft, setDisabledLeft] = useState(true)
   const [disabledRight, setDisabledRight] = useState(count < 5)
-  
   function moveRight() {
     if (count < 5) return
     setDisabledRight(true)

@@ -42,18 +42,18 @@ export default function ProductPage({ data }) {
 }
 
 export const productQuery = graphql`
-    query productBySlug($path: String) {
-        markdownRemark( frontmatter: { slug: { eq: $path } }) {
-            frontmatter {
-                name
-                slug
-                image
-                description
-                price
-                tag
-            }
-        }
+  query productBySlug($path: String) {
+    markdownRemark( frontmatter: { slug: { eq: $path } }) {
+      frontmatter {
+        name
+        slug
+        image
+        description
+        price
+        tag
+      }
     }
+  }
 `
 
 const styles = {

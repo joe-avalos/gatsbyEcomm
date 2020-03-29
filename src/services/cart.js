@@ -17,15 +17,14 @@ export const addToCart = item => {
       cart.items.find((o, i) => {
         if (o.name === item.name) {
           cart.items[i] = { name: item.name, quantity: quantity, price: obj.price * quantity }
-          return setCart(cart)
+          return true
         }
       })
     } else {
       obj = { name: item.name, quantity: 1, price: item.price }
       cart.items.push(obj)
-      return setCart(cart)
     }
-    return true
+    return setCart(cart)
   } else {
     return setCart({
       items: [{ name: item.name, quantity: 1, price: item.price }],
@@ -35,5 +34,11 @@ export const addToCart = item => {
 
 export const cartCount = () => {
   const cart = getCart()
+  if (!cart.items) return 0
   return cart.items.reduce((tally, cartItem) => tally + cartItem.quantity, 0)
+}
+
+export const getCartItems = () => {
+  const cart = getCart()
+  return cart.items || {}
 }
