@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useState } from "react"
+import React, { useState } from "react"
 import { jsx } from "theme-ui"
 import { Link } from "gatsby"
 import Modal from "styled-react-modal"

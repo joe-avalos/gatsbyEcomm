@@ -51,7 +51,6 @@ function ProductList() {
     }
     if (first > 0) setDisabledLeft(false)
   }
-  
   return (
     <section sx={{ paddingTop: [10, 20, 64] }}>
       <Row styles={{ justifyContent: ["left"], position: "relative" }}>

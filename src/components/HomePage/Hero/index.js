@@ -25,7 +25,7 @@ function HomepageHero() {
           </button>
         </Col>
       </Row>
-      <img src={HeroBackground} sx={styles.backgroundImg} />
+      <img src={HeroBackground} sx={styles.backgroundImg} alt="BeeJBG" />
     </section>
   )
 }
