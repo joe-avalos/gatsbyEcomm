@@ -12,7 +12,9 @@ exports.createPages = ({ graphql, actions }) => {
             frontmatter {
               name
               slug
-              image
+              image{
+                publicURL
+              }
               description
               tag
               price

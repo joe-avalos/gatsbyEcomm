@@ -7,7 +7,6 @@ import PropTypes from "prop-types"
 import { Container, Row, Col } from "../components/Grid"
 import { addToCart } from "../services/cart"
 import Layout from "../components/layout"
-import Dummy from "../images/products/dummy.svg"
 
 export default function ProductPage({ data }) {
   const prod = data.markdownRemark
@@ -20,7 +19,7 @@ export default function ProductPage({ data }) {
         <section style={{ padding: "100px 0" }}>
           <Row>
             <Col styles={{ width: "1/2" }}>
-              <img style={styles.imgWrapper} src={Dummy} alt={prod.frontmatter.name} />
+              <img style={styles.imgWrapper} src={prod.frontmatter.image.publicURL} alt={prod.frontmatter.name} />
             </Col>
             <Col styles={{ width: "1/2", fontFamily: "Roboto, sans-serif" }}>
               <p sx={styles.tag}>{prod.frontmatter.tag}</p>
@@ -42,12 +41,14 @@ export default function ProductPage({ data }) {
 }
 
 export const productQuery = graphql`
-  query productBySlug($path: String) {
+  query productBySlug($path: String!) {
     markdownRemark( frontmatter: { slug: { eq: $path } }) {
       frontmatter {
         name
         slug
-        image
+        image{
+            publicURL
+        }
         description
         price
         tag

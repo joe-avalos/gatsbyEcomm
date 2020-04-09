@@ -1,80 +1,104 @@
 /** @jsx jsx */
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { jsx } from "theme-ui"
+import styled from "styled-components"
 
-import { Row, Col } from "../Grid"
-import ProductCard from "./ProductCard"
+import { Row } from "../Grid"
+import Scroller from "./Scroller"
 import Arrow from "../../images/elements/arrow.svg"
 
 function ProductList() {
   const data = useStaticQuery(graphql`
-    query productQuery{
-      allMarkdownRemark {
-        edges {
-          node {
-            id
-            frontmatter {
-              name
-              slug
-              image
-              excerpt
-            }
+      query productQuery{
+          allMarkdownRemark {
+              edges {
+                  node {
+                      id
+                      frontmatter {
+                          name
+                          slug
+                          image{
+                              publicURL
+                          }
+                          excerpt
+                      }
+                  }
+              }
           }
-        }
       }
-    }
   `)
   const totalProds = data.allMarkdownRemark.edges.filter(({ node }) => node.frontmatter.name !== null)
   const count = totalProds.length
-  const [first, setFirst] = useState(0)
-  const [last, setLast] = useState(count < 5 ? count - 1 : 3)
-  const [disabledLeft, setDisabledLeft] = useState(true)
-  const [disabledRight, setDisabledRight] = useState(count < 5)
-  function moveRight() {
-    if (count < 5) return
-    setDisabledRight(true)
-    if (last < count - 1) {
-      setFirst(first + 1)
-      setLast(last + 1)
-      setDisabledLeft(false)
+  const scrollerWidth = count * 305
+  const getWidth = () => (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * 0.85
+  const [extraWidth, setExtraWidth] = useState(scrollerWidth - getWidth())
+  useEffect(() => {
+    console.log(extraWidth)
+    const resizeListener = () => {
+      setExtraWidth(scrollerWidth - getWidth())
     }
-    if (last < count - 1) setDisabledRight(false)
-  }
-  function moveLeft() {
-    if (count < 5) return
-    setDisabledLeft(true)
-    if (first > 0) {
-      setFirst(first - 1)
-      setLast(last - 1)
+    // set resize listener
+    window.addEventListener("resize", resizeListener)
+    // clean up function
+    return () => {
+      // remove resize listener
+      window.removeEventListener("resize", resizeListener)
+    }
+  }, [])
+  const [bgPos, setBgPos] = useState(0)
+  const [mouseDR, setMouseDR] = useState(0)
+  const [mouseDL, setMouseDL] = useState(0)
+  const [disabledLeft, setDisabledLeft] = useState(true)
+  const [disabledRight, setDisabledRight] = useState(extraWidth < 0)
+  useEffect(() => {
+    if (mouseDR === 1 && (extraWidth + bgPos) >= 0) {
+      setDisabledLeft(false)
+      setBgPos(bgPos - 300)
+    }
+    checkRight()
+  }, [mouseDR])
+  useEffect(() => {
+    if (mouseDL === 1 && bgPos < 0) {
+      setDisabledRight(false)
+      setBgPos(bgPos + 300)
+    }
+    checkLeft()
+  }, [mouseDL])
+  function checkRight() {
+    if ((extraWidth + bgPos) <= 0) {
+      setDisabledRight(true)
+    } else {
       setDisabledRight(false)
     }
-    if (first > 0) setDisabledLeft(false)
+  }
+  function checkLeft() {
+    if (bgPos >= 0) {
+      setDisabledLeft(true)
+    } else {
+      setDisabledLeft(false)
+    }
   }
   return (
     <section sx={{ paddingTop: [10, 20, 64] }}>
       <Row styles={{ justifyContent: ["left"], position: "relative" }}>
-        <button sx={styles.arrowLeft} disabled={disabledLeft} onClick={moveLeft}>
+        <button
+          sx={styles.arrowLeft}
+          disabled={disabledLeft}
+          onClick={() => setMouseDL(1)}
+          onMouseUp={() => setMouseDL(0)}
+        >
           <img src={Arrow} alt="Arrow left" />
         </button>
-        <Col styles={styles.ListWrapper}>
-          {totalProds.map(({ node }, index) => {
-            if (index >= first && index <= last) {
-              return (
-                <ProductCard
-                  key={node.id}
-                  name={node.frontmatter.name}
-                  slug={node.frontmatter.slug}
-                  excerpt={node.frontmatter.excerpt}
-                />
-              )
-            } else {
-              return null
-            }
-          },
-          )}
-        </Col>
-        <button sx={styles.arrowRight} disabled={disabledRight} onClick={moveRight}>
+        <ListWrapper>
+          <Scroller totalProds={totalProds} bgPos={bgPos} />
+        </ListWrapper>
+        <button
+          sx={styles.arrowRight}
+          disabled={disabledRight}
+          onClick={() => setMouseDR(1)}
+          onMouseUp={() => setMouseDR(0)}
+        >
           <img src={Arrow} alt="Arrow right" />
         </button>
       </Row>
@@ -84,14 +108,15 @@ function ProductList() {
 
 export default ProductList
 
+const ListWrapper = styled.div`
+  display: block;
+  overflow-x: hidden;
+  position: relative;
+  height: 273px;
+  max-width: 85vw;
+`
+
 const styles = {
-  ListWrapper: {
-    display: "flex",
-    overflowX: "hidden",
-    position: "relative",
-    height: 273,
-    maxWidth: "100%",
-  },
   arrowLeft: {
     variant: "button.secondary",
     position: "absolute",
