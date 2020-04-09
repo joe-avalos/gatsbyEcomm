@@ -39,7 +39,7 @@ function ModalCart({ items, toggleModal }) {
         ^
       </StyledHeader>
       <ul sx={styles.ul}>
-        {items.map((item, idx) => {
+        {items && items.length > 0 && items.map((item, idx) => {
           return (
             <CartItem key={idx}>
               <img src={Dummy} alt="Dummy img" />

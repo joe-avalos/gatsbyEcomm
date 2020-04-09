@@ -20,7 +20,7 @@ const StyledScroller = styled.div`
   left: ${props => props.bgPos}px;
 `
 
-const Scroller = ({ totalProds, bgPos }) => (
+const Scroller = ({ totalProds, bgPos, setCart }) => (
   <StyledScroller totalProds={totalProds.length} bgPos={bgPos}>
     {totalProds.map(({ node }) => {
       return (
@@ -29,10 +29,8 @@ const Scroller = ({ totalProds, bgPos }) => (
           key={node.id}
         >
           <ProductCard
-            name={node.frontmatter.name}
-            slug={node.frontmatter.slug}
-            img={node.frontmatter.image.publicURL}
-            excerpt={node.frontmatter.excerpt}
+            frontmatter={node.frontmatter}
+            setCart={setCart}
           />
         </StyledLink>
       )

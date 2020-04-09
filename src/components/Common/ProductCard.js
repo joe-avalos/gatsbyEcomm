@@ -5,6 +5,7 @@ import PropTypes from "prop-types"
 import styled from "styled-components"
 
 import Plus from "../../images/elements/plus.svg"
+import { addToCart, cartCount } from "../../services/cart"
 
 const CardWrapper = styled.div`
   position: relative;
@@ -32,13 +33,19 @@ const CardWrapper = styled.div`
   }
 `
 
-function ProductCard({ name, excerpt, img }) {
+function ProductCard({ frontmatter, setCart }) {
+  function handleAdd(e) {
+    e.stopPropagation()
+    e.preventDefault()
+    addToCart(frontmatter)
+    setCart(cartCount())
+  }
   return (
     <CardWrapper>
-      <img src={img} alt={name} />
-      <h5>{name}</h5>
-      <p>{excerpt}</p>
-      <button type="button" sx={styles.plus}>
+      <img src={frontmatter.image.publicURL} alt={frontmatter.name} />
+      <h5>{frontmatter.name}</h5>
+      <p>{frontmatter.excerpt}</p>
+      <button type="button" sx={styles.plus} onClick={handleAdd}>
         <img src={Plus} alt="Read more" />
       </button>
     </CardWrapper>
@@ -46,8 +53,11 @@ function ProductCard({ name, excerpt, img }) {
 }
 
 ProductCard.propTypes = {
-  name: PropTypes.string.isRequired,
-  excerpt: PropTypes.string.isRequired,
+  frontmatter: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    excerpt: PropTypes.string.isRequired,
+    image: PropTypes.object.isRequired,
+  }).isRequired,
 }
 
 export default ProductCard

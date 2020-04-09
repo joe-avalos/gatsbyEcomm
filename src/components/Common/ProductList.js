@@ -8,33 +8,14 @@ import { Row } from "../Grid"
 import Scroller from "./Scroller"
 import Arrow from "../../images/elements/arrow.svg"
 
-function ProductList() {
-  const data = useStaticQuery(graphql`
-      query productQuery{
-          allMarkdownRemark {
-              edges {
-                  node {
-                      id
-                      frontmatter {
-                          name
-                          slug
-                          image{
-                              publicURL
-                          }
-                          excerpt
-                      }
-                  }
-              }
-          }
-      }
-  `)
+function ProductList({setCart}) {
+  const data = useStaticQuery(query)
   const totalProds = data.allMarkdownRemark.edges.filter(({ node }) => node.frontmatter.name !== null)
   const count = totalProds.length
   const scrollerWidth = count * 305
   const getWidth = () => (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) * 0.85
   const [extraWidth, setExtraWidth] = useState(scrollerWidth - getWidth())
   useEffect(() => {
-    console.log(extraWidth)
     const resizeListener = () => {
       setExtraWidth(scrollerWidth - getWidth())
     }
@@ -91,7 +72,7 @@ function ProductList() {
           <img src={Arrow} alt="Arrow left" />
         </button>
         <ListWrapper>
-          <Scroller totalProds={totalProds} bgPos={bgPos} />
+          <Scroller totalProds={totalProds} bgPos={bgPos} setCart={setCart} />
         </ListWrapper>
         <button
           sx={styles.arrowRight}
@@ -107,6 +88,27 @@ function ProductList() {
 }
 
 export default ProductList
+
+const query = graphql`
+    query productQuery{
+        allMarkdownRemark {
+            edges {
+                node {
+                    id
+                    frontmatter {
+                        name
+                        slug
+                        price
+                        image{
+                            publicURL
+                        }
+                        excerpt
+                    }
+                }
+            }
+        }
+    }
+`
 
 const ListWrapper = styled.div`
   display: block;

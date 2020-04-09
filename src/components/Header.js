@@ -3,12 +3,11 @@ import React, { useState } from "react"
 import { jsx } from "theme-ui"
 import { Link } from "gatsby"
 import Modal from "styled-react-modal"
-import styled from "styled-components"
 
 import { Container } from "../components/Grid"
 import ModalCart from "../components/Common/ModalCart"
 import Cart from "../images/elements/cart.svg"
-import { cartCount, getCartItems } from "../services/cart"
+import { getCartItems } from "../services/cart"
 
 const StyledModal = Modal.styled`
   position: absolute;
@@ -22,8 +21,7 @@ const StyledModal = Modal.styled`
   border-radius: 4px;
 `
 
-export default function Header() {
-  const count = cartCount()
+export default function Header({cart}) {
   const [isOpen, setIsOpen] = useState(false)
   function toggleModal() {
     setIsOpen(!isOpen)
@@ -49,7 +47,7 @@ export default function Header() {
         </Link>
         <button sx={styles.cart} onClick={toggleModal}>
           <img src={Cart} alt="Shopping Cart" />
-          <div sx={styles.dot}>{count}</div>
+          <div sx={styles.dot}>{cart}</div>
         </button>
         <StyledModal
           isOpen={isOpen}

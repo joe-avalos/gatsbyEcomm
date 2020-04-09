@@ -1,20 +1,18 @@
 /** @jsx jsx */
-import React from "react"
+import React, { useState } from "react"
 import { graphql } from "gatsby"
 import { jsx } from "theme-ui"
 import PropTypes from "prop-types"
 
 import { Container, Row, Col } from "../components/Grid"
-import { addToCart } from "../services/cart"
+import { addToCart, cartCount } from "../services/cart"
 import Layout from "../components/layout"
 
 export default function ProductPage({ data }) {
+  const [cart, setCart] = useState(cartCount())
   const prod = data.markdownRemark
-  function handleAdd() {
-    addToCart(prod.frontmatter)
-  }
   return (
-    <Layout>
+    <Layout cart={cart}>
       <Container>
         <section style={{ padding: "100px 0" }}>
           <Row>
@@ -28,7 +26,10 @@ export default function ProductPage({ data }) {
               <p sx={styles.price}>$ {prod.frontmatter.price}</p>
               <button
                 sx={{ variant: "button.primary", mx: ["auto", null, 0] }}
-                onClick={handleAdd}
+                onClick={() => {
+                  addToCart(prod.frontmatter)
+                  setCart(cartCount())
+                }}
               >
                 Add to cart
               </button>
@@ -91,5 +92,5 @@ const styles = {
 }
 
 ProductPage.propTypes = {
-  data: PropTypes.element.isRequired,
+  data: PropTypes.object.isRequired,
 }
